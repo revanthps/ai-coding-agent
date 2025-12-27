@@ -26,8 +26,6 @@ def main():
     else:
         raise RuntimeError("API Key not found. Please set the HF_TOKEN environment variable.")
 
-    # client = OpenAI(api_key=api_key)
-    # 2. Wrap it in ChatHuggingFace to handle message formatting
     chat_model = ChatHuggingFace(llm=llm).bind_tools(tools)
 
 
@@ -42,7 +40,6 @@ def main():
     if args.verbose:
         print(f"Prompt: {args.user_prompt}")
     
-    # 3. Format messages (Equivalent to your types.Content list)
     messages = [
         SystemMessage(content=system_prompt),
         HumanMessage(content=args.user_prompt)
@@ -50,12 +47,6 @@ def main():
     
     generate_content(chat_model, messages, args.verbose)
     
-    # response = client.responses.create(
-    #     model="gpt-4o-mini",
-    #     input=message,
-    # )
-
-
     
 def generate_content(chat_model, messages, verbose):
 
@@ -92,14 +83,9 @@ def generate_content(chat_model, messages, verbose):
                     or result == "" 
                 ):
                     raise RuntimeError(f"Empty function response for {tool_call["name"]}")
-                else:
-                    # print(f" -> {result}")
-                    tool_msg = ToolMessage(
-                        content=str(result),
-                        tool_call_id=tool_call["id"],
-                        name=tool_call["name"]
-                        )                
-                    messages.append(tool_msg)
+                
+                else:              
+                    messages.append(result)
                 
                 tool_msg = ToolMessage(
                     content=str(result),

@@ -27,7 +27,7 @@ def call_function(function_call, verbose=False):
     if function_name not in function_map:
         return ToolMessage(
             content=json.dumps({"error": f"Unknown function: {function_name}"}),
-            tool_call_id=function_call["id"], # You must get this ID from the AI's request
+            tool_call_id=function_call["id"], 
             name=function_name
         )
     
@@ -37,7 +37,7 @@ def call_function(function_call, verbose=False):
 
     return ToolMessage(
         content = json.dumps({"result": result}),
-        tool_call_id=function_call["id"], # You must get this ID from the AI's request
+        tool_call_id=function_call["id"], 
         name=function_name,
     )
 
